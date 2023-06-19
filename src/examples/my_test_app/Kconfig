@@ -1,0 +1,5 @@
+menuconfig EXAMPLES_MY_TEST_APP
+	bool "My Test app"
+	default n
+	---help---
+		Enable My Test app

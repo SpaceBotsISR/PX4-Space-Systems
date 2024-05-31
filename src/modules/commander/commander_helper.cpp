@@ -78,6 +78,7 @@
 #define VEHICLE_TYPE_VTOL_TILTROTOR 21
 #define VEHICLE_TYPE_VTOL_FIXEDROTOR 22 // VTOL standard
 #define VEHICLE_TYPE_VTOL_TAILSITTER 23
+#define VEHICLE_TYPE_SPACECRAFT 99
 
 #define BLINK_MSG_TIME	700000	// 3 fast blinks (in us)
 
@@ -122,6 +123,11 @@ bool is_ground_vehicle(const vehicle_status_s &current_status)
 	return (current_status.system_type == VEHICLE_TYPE_BOAT || current_status.system_type == VEHICLE_TYPE_GROUND_ROVER);
 }
 
+bool is_spacecraft(const vehicle_status_s &current_status)
+{
+	return (current_status.system_type == VEHICLE_TYPE_SPACECRAFT);
+}
+
 // End time for currently blinking LED message, 0 if no blink message
 static hrt_abstime blink_msg_end = 0;
 static int fd_leds{-1};
@@ -153,7 +159,7 @@ int buzzer_init()
 	tune_durations[tune_control_s::TUNE_ID_BATTERY_WARNING_SLOW] = 800000;
 	tune_durations[tune_control_s::TUNE_ID_SINGLE_BEEP] = 300000;
 
-	tune_control_pub = orb_advertise_queue(ORB_ID(tune_control), &tune_control, tune_control_s::ORB_QUEUE_LENGTH);
+	tune_control_pub = orb_advertise(ORB_ID(tune_control), &tune_control);
 
 	return PX4_OK;
 }
@@ -330,7 +336,7 @@ int led_init()
 	led_control.mode = led_control_s::MODE_OFF;
 	led_control.priority = 0;
 	led_control.timestamp = hrt_absolute_time();
-	led_control_pub = orb_advertise_queue(ORB_ID(led_control), &led_control, led_control_s::ORB_QUEUE_LENGTH);
+	led_control_pub = orb_advertise(ORB_ID(led_control), &led_control);
 
 	/* first open normal LEDs */
 	fd_leds = px4_open(LED0_DEVICE_PATH, O_RDWR);

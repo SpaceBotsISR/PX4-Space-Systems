@@ -15,6 +15,8 @@ add_library(px4_layer
 	usr_board_ctrl.c
 	usr_hrt.cpp
 	usr_mcu_version.cpp
+	${PX4_SOURCE_DIR}/platforms/common/Serial.cpp
+	SerialImpl.cpp
 )
 
 target_link_libraries(px4_layer
@@ -44,6 +46,7 @@ target_link_libraries(px4_layer
 
 add_library(px4_kernel_layer
 	${KERNEL_SRCS}
+	SerialImpl.cpp
 )
 
 target_link_libraries(px4_kernel_layer
@@ -52,6 +55,8 @@ target_link_libraries(px4_kernel_layer
 		nuttx_kc
 		nuttx_karch
 		nuttx_kmm
+	PRIVATE
+		kernel_events_interface # events_ioctl_init
 )
 
 target_link_libraries(px4_kernel_layer

@@ -44,11 +44,16 @@
 PWMSim::PWMSim(bool hil_mode_enabled) :
 	OutputModuleInterface(MODULE_NAME, px4::wq_configurations::hp_default)
 {
+	// initialize parameters - dynamic instead of static
+	PWM_SIM_PWM_MAX_MAGIC = _param_pwm_sim_max_magic.get();
+	PWM_SIM_PWM_MIN_MAGIC = _param_pwm_sim_min_magic.get();
+	PWM_SIM_FAILSAFE_MAGIC = _param_pwm_sim_failsafe_magic.get();
+	PWM_SIM_DISARMED_MAGIC = _param_pwm_sim_disarmed_magic.get();
+
 	_mixing_output.setAllDisarmedValues(PWM_SIM_DISARMED_MAGIC);
 	_mixing_output.setAllFailsafeValues(PWM_SIM_FAILSAFE_MAGIC);
 	_mixing_output.setAllMinValues(PWM_SIM_PWM_MIN_MAGIC);
 	_mixing_output.setAllMaxValues(PWM_SIM_PWM_MAX_MAGIC);
-
 	_mixing_output.setIgnoreLockdown(hil_mode_enabled);
 }
 
@@ -75,8 +80,9 @@ bool PWMSim::updateOutputs(bool stop_motors, uint16_t outputs[MAX_ACTUATORS], un
 				bool is_reversible = reversible_outputs & (1u << i);
 				float output = outputs[i];
 
-				if (((int)function >= (int)OutputFunction::Motor1 && (int)function <= (int)OutputFunction::MotorMax)
-				    && !is_reversible) {
+				if ((((int)function >= (int)OutputFunction::Motor1 && (int)function <= (int)OutputFunction::MotorMax)
+				    && !is_reversible) || 
+					((int)function >= (int)OutputFunction::Thruster1 && (int)function <= (int)OutputFunction::ThrusterMax)) {
 					// Scale non-reversible motors to [0, 1]
 					actuator_outputs.output[i] = (output - PWM_SIM_PWM_MIN_MAGIC) / (PWM_SIM_PWM_MAX_MAGIC - PWM_SIM_PWM_MIN_MAGIC);
 

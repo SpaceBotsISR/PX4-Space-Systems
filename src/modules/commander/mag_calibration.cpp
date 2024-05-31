@@ -771,6 +771,10 @@ calibrate_return mag_calibrate_all(orb_advert_t *mavlink_log_pub, int32_t cal_ma
 
 							// FALLTHROUGH
 							case ROTATION_PITCH_180_YAW_270: // skip 27, same as 10 ROTATION_ROLL_180_YAW_90
+
+							// FALLTHROUGH
+							case ROTATION_CUSTOM: // Skip, as we currently don't support detecting arbitrary euler angle orientation
+
 								MSE[r] = FLT_MAX;
 								break;
 
@@ -830,6 +834,11 @@ calibrate_return mag_calibrate_all(orb_advert_t *mavlink_log_pub, int32_t cal_ma
 								PX4_INFO("[cal] External Mag: %d (%" PRIu32 "), keeping manually configured rotation %" PRIu8, cur_mag,
 									 worker_data.calibration[cur_mag].device_id(), worker_data.calibration[cur_mag].rotation_enum());
 								continue;
+
+							case ROTATION_CUSTOM:
+								PX4_INFO("[cal] External Mag: %d (%" PRIu32 "), not setting rotation enum since it's specified by Euler Angle",
+									 cur_mag, worker_data.calibration[cur_mag].device_id());
+								continue; // Continue to the next mag loop
 
 							default:
 								break;
@@ -997,8 +1006,8 @@ int do_mag_calibration_quick(orb_advert_t *mavlink_log_pub, float heading_radian
 			return PX4_ERROR;
 		}
 
-		calibration_log_critical(mavlink_log_pub, "Assuming vehicle is facing heading %.1f degrees",
-					 (double)math::radians(heading_radians));
+		calibration_log_info(mavlink_log_pub, "Assuming vehicle is facing heading %.1f degrees",
+				     (double)math::degrees(heading_radians));
 
 		matrix::Eulerf euler{matrix::Quatf{attitude.q}};
 		euler(2) = heading_radians;

@@ -236,11 +236,6 @@ private:
 	 */
 	void write_header(LogType type);
 
-	/// Array to store written formats for nested definitions (only)
-	using WrittenFormats = Array < const orb_metadata *, 20 >;
-
-	void write_format(LogType type, const orb_metadata &meta, WrittenFormats &written_formats, ulog_message_format_s &msg,
-			  int subscription_index, int level = 1);
 	void write_formats(LogType type);
 
 	/**
@@ -365,7 +360,7 @@ private:
 	uint16_t 					_event_sequence_offset{0}; ///< event sequence offset to account for skipped (not logged) messages
 	uint16_t 					_event_sequence_offset_mission{0};
 
-	uint8_t						_excluded_optional_topic_ids[LoggedTopics::MAX_EXCLUDED_OPTIONAL_TOPICS_NUM];
+	orb_id_size_t  					_excluded_optional_topic_ids[LoggedTopics::MAX_EXCLUDED_OPTIONAL_TOPICS_NUM];
 	int						_num_excluded_optional_topic_ids{0};
 
 	LogWriter					_writer;

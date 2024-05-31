@@ -172,7 +172,9 @@ void ADIS16507::RunImpl()
 			const uint16_t DIAG_STAT = RegisterRead(Register::DIAG_STAT);
 
 			if (DIAG_STAT != 0) {
-				PX4_ERR("DIAG_STAT: %#X", DIAG_STAT);
+				PX4_ERR("self test failed, resetting. DIAG_STAT: %#X", DIAG_STAT);
+				_state = STATE::RESET;
+				ScheduleDelayed(3_s);
 
 			} else {
 				PX4_DEBUG("self test passed");
@@ -283,6 +285,7 @@ void ADIS16507::RunImpl()
 				if (buffer.checksum != checksum) {
 					//PX4_DEBUG("adis_report.checksum: %X vs calculated: %X", buffer.checksum, checksum);
 					perf_count(_bad_transfer_perf);
+					perf_count(_perf_crc_bad);
 				}
 
 				if (buffer.DIAG_STAT != DIAG_STAT_BIT::Data_path_overrun) {

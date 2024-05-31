@@ -81,13 +81,15 @@ if(gazebo_FOUND)
 		iris_foggy_lidar
 		iris_irlock
 		iris_obs_avoid
+		iris_depth_camera
+		iris_downward_depth_camera
 		iris_opt_flow
 		iris_opt_flow_mockup
 		iris_rplidar
 		iris_vision
 		omnicopter
 		2d_spacecraft
-		3d_spacecraft
+		spacecraft_dart
 		plane
 		plane_cam
 		plane_catapult
@@ -112,11 +114,14 @@ if(gazebo_FOUND)
 		empty
 		ksql_airport
 		mcmillan_airfield
+		ramped_up_wind
+		frictionless
 		sonoma_raceway
 		warehouse
 		windy
 		yosemite
 		space
+		zero_g
 	)
 
 	# find corresponding airframes

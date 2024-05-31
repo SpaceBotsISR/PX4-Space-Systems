@@ -56,8 +56,9 @@ static const FunctionProvider all_function_providers[] = {
 	{OutputFunction::Constant_Min, &FunctionConstantMin::allocate},
 	{OutputFunction::Constant_Max, &FunctionConstantMax::allocate},
 	{OutputFunction::Motor1, OutputFunction::MotorMax, &FunctionMotors::allocate},
+	{OutputFunction::Thruster1, OutputFunction::ThrusterMax, &FunctionThrusters::allocate},
 	{OutputFunction::Servo1, OutputFunction::ServoMax, &FunctionServos::allocate},
-	{OutputFunction::Offboard_Actuator_Set1, OutputFunction::Offboard_Actuator_Set6, &FunctionActuatorSet::allocate},
+	{OutputFunction::Peripheral_via_Actuator_Set1, OutputFunction::Peripheral_via_Actuator_Set6, &FunctionActuatorSet::allocate},
 	{OutputFunction::Landing_Gear, &FunctionLandingGear::allocate},
 	{OutputFunction::Landing_Gear_Wheel, &FunctionLandingGearWheel::allocate},
 	{OutputFunction::Parachute, &FunctionParachute::allocate},
@@ -237,7 +238,8 @@ bool MixingOutput::updateSubscriptions(bool allow_wq_switch)
 			int32_t function;
 
 			if (_param_handles[i].function != PARAM_INVALID && param_get(_param_handles[i].function, &function) == 0) {
-				if (function >= (int32_t)OutputFunction::Motor1 && function <= (int32_t)OutputFunction::MotorMax) {
+				if ((function >= (int32_t)OutputFunction::Motor1 && function <= (int32_t)OutputFunction::MotorMax) ||
+				    (function >= (int32_t)OutputFunction::Thruster1 && function <= (int32_t)OutputFunction::ThrusterMax)) {
 					switch_requested = true;
 				}
 			}
@@ -455,13 +457,16 @@ bool MixingOutput::update()
 		}
 	}
 
-	if (!all_disabled) {
+	// Send output if any function mapped or one last disabling sample
+	if (!all_disabled || !_was_all_disabled) {
 		if (!_armed.armed && !_armed.manual_lockdown) {
 			_actuator_test.overrideValues(outputs, _max_num_outputs);
 		}
 
 		limitAndUpdateOutputs(outputs, has_updates);
 	}
+
+	_was_all_disabled = all_disabled;
 
 	return true;
 }
@@ -528,10 +533,16 @@ uint16_t MixingOutput::output_limit_calc_single(int i, float value) const
 		value = -1.f * value;
 	}
 
-	uint16_t effective_output = value * (_max_value[i] - _min_value[i]) / 2 + (_max_value[i] + _min_value[i]) / 2;
-
-	// last line of defense against invalid inputs
-	return math::constrain(effective_output, _min_value[i], _max_value[i]);
+	// Thruster is a non-revertible output, so we need to map the value to the correct range
+	if(_function_assignment[i] >= OutputFunction::Thruster1 && _function_assignment[i] <= OutputFunction::ThrusterMax) {
+		const float output = math::interpolate(value, 0.f, 1.f,
+					       static_cast<float>(_min_value[i]), static_cast<float>(_max_value[i]));
+		return math::constrain(lroundf(output), 0L, static_cast<long>(UINT16_MAX));
+	} else {
+		const float output = math::interpolate(value, -1.f, 1.f,
+					       static_cast<float>(_min_value[i]), static_cast<float>(_max_value[i]));
+		return math::constrain(lroundf(output), 0L, static_cast<long>(UINT16_MAX));
+	}
 }
 
 void

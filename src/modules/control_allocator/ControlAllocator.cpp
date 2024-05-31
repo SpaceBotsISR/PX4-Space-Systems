@@ -239,7 +239,7 @@ ControlAllocator::update_effectiveness_source()
 			break;
 
 		case EffectivenessSource::ROVER_DIFFERENTIAL:
-			tmp = new ActuatorEffectivenessRoverDifferential();
+			// differential_drive_control does allocation and publishes directly to actuator_motors topic
 			break;
 
 		case EffectivenessSource::FIXED_WING:
@@ -264,6 +264,18 @@ ControlAllocator::update_effectiveness_source()
 
 		case EffectivenessSource::HELICOPTER_TAIL_SERVO:
 			tmp = new ActuatorEffectivenessHelicopter(this, ActuatorType::SERVOS);
+			break;
+
+		case EffectivenessSource::HELICOPTER_COAXIAL:
+			tmp = new ActuatorEffectivenessHelicopterCoaxial(this);
+			break;
+
+		case EffectivenessSource::SPACECRAFT_2D:
+			tmp = new ActuatorEffectivenessSpacecraft(this);
+			break;
+
+		case EffectivenessSource::SPACECRAFT_3D:
+			tmp = new ActuatorEffectivenessSpacecraft(this);
 			break;
 
 		default:
@@ -356,6 +368,14 @@ ControlAllocator::Run()
 
 			// Forward to effectiveness source
 			_actuator_effectiveness->setFlightPhase(flight_phase);
+		}
+	}
+
+	{
+		vehicle_control_mode_s vehicle_control_mode;
+
+		if (_vehicle_control_mode_sub.update(&vehicle_control_mode)) {
+			_publish_controls = vehicle_control_mode.flag_control_allocation_enabled;
 		}
 	}
 
@@ -507,6 +527,16 @@ ControlAllocator::update_effectiveness_matrix_if_needed(EffectivenessUpdateReaso
 
 					slew_rate[selected_matrix](actuator_idx_matrix[selected_matrix]) = _params.slew_rate_motors[actuator_type_idx];
 
+				} else if ((ActuatorType)actuator_type == ActuatorType::THRUSTERS) {
+					if (actuator_type_idx >= MAX_NUM_THRUSTERS) {
+						PX4_ERR("Too many thrusters");
+						_num_actuators[actuator_type] = 0;
+						break;
+					}
+
+					minimum[selected_matrix](actuator_idx_matrix[selected_matrix]) = 0.f;
+
+
 				} else if ((ActuatorType)actuator_type == ActuatorType::SERVOS) {
 					if (actuator_type_idx >= MAX_NUM_SERVOS) {
 						PX4_ERR("Too many servos");
@@ -641,6 +671,10 @@ ControlAllocator::publish_control_allocator_status(int matrix_index)
 void
 ControlAllocator::publish_actuator_controls()
 {
+	if (!_publish_controls) {
+		return;
+	}
+
 	actuator_motors_s actuator_motors;
 	actuator_motors.timestamp = hrt_absolute_time();
 	actuator_motors.timestamp_sample = _timestamp_sample;
@@ -656,10 +690,18 @@ ControlAllocator::publish_actuator_controls()
 
 	uint32_t stopped_motors = _actuator_effectiveness->getStoppedMotors() | _handled_motor_failure_bitmask;
 
+	// Actuator setpoints are shared between Motors or Thrusters. For now, we assume we have only either of them
+	int actuator_type = 0;
+
+	if (_num_actuators[(int)ActuatorType::THRUSTERS] > 0) {
+		actuator_type = (int)ActuatorType::THRUSTERS;
+	}
+
 	// motors
 	int motors_idx;
 
-	for (motors_idx = 0; motors_idx < _num_actuators[0] && motors_idx < actuator_motors_s::NUM_CONTROLS; motors_idx++) {
+	for (motors_idx = 0; motors_idx < _num_actuators[actuator_type]
+	     && motors_idx < actuator_motors_s::NUM_CONTROLS; motors_idx++) {
 		int selected_matrix = _control_allocation_selection_indexes[actuator_idx];
 		float actuator_sp = _control_allocation[selected_matrix]->getActuatorSetpoint()(actuator_idx_matrix[selected_matrix]);
 		actuator_motors.control[motors_idx] = PX4_ISFINITE(actuator_sp) ? actuator_sp : NAN;
@@ -679,10 +721,11 @@ ControlAllocator::publish_actuator_controls()
 	_actuator_motors_pub.publish(actuator_motors);
 
 	// servos
-	if (_num_actuators[1] > 0) {
+	if (_num_actuators[(int)ActuatorType::SERVOS] > 0) {
 		int servos_idx;
 
-		for (servos_idx = 0; servos_idx < _num_actuators[1] && servos_idx < actuator_servos_s::NUM_CONTROLS; servos_idx++) {
+		for (servos_idx = 0; servos_idx < _num_actuators[(int)ActuatorType::SERVOS]
+		     && servos_idx < actuator_servos_s::NUM_CONTROLS; servos_idx++) {
 			int selected_matrix = _control_allocation_selection_indexes[actuator_idx];
 			float actuator_sp = _control_allocation[selected_matrix]->getActuatorSetpoint()(actuator_idx_matrix[selected_matrix]);
 			actuator_servos.control[servos_idx] = PX4_ISFINITE(actuator_sp) ? actuator_sp : NAN;

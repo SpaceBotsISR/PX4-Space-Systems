@@ -37,6 +37,7 @@
 
 #include "rate_control.hpp"
 #include <px4_platform_common/defines.h>
+#include <px4_platform_common/log.h>
 
 using namespace matrix;
 
@@ -109,6 +110,7 @@ void RateControl::updateIntegral(Vector3f &rate_error, const float dt)
 
 		// Perform the integration using a first order method
 		float rate_i = _rate_int(i) + i_factor * _gain_i(i) * rate_error(i) * dt;
+		// if(i == 2) PX4_INFO("Rate integral: %f / %f ", (double)rate_i, (double)_gain_i(2));
 
 		// do not propagate the result if out of range or invalid
 		if (PX4_ISFINITE(rate_i)) {

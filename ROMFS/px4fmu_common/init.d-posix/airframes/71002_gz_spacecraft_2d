@@ -9,6 +9,18 @@
 
 . ${R}etc/init.d/rc.sc_defaults
 
+PX4_SIMULATOR=${PX4_SIMULATOR:=gz}
+PX4_GZ_WORLD=${PX4_GZ_WORLD:=default}
+PX4_SIM_MODEL=${PX4_SIM_MODEL:=spacecraft_2d}
+
+param set-default SIM_GZ_EN 1
+
+param set-default SENS_EN_GPSSIM 1
+param set-default SENS_EN_BAROSIM 1
+param set-default SENS_EN_MAGSIM 1
+param set-default COM_ARM_CHK_ESCS 0  # We don't have ESCs
+param set-default FD_ESCS_EN 0 # We don't have ESCs - but maybe we need this later?
+
 param set-default CA_AIRFRAME 13
 param set-default MAV_TYPE 99
 
@@ -16,10 +28,6 @@ param set-default CA_THRUSTER_CNT 8
 param set-default CA_R_REV 255
 
 # param set-default FW_ARSP_MODE 1
-param set-default UXRCE_DDS_CFG 1000
-param set-default MAV_2_CONFIG 1000
-param set-default MAV_2_REMOTE_PRT 14550
-param set-default MAV_2_UDP 14550
 
 # Auto to be provided by Custom Airframe
 param set-default CA_METHOD 0
@@ -100,18 +108,32 @@ param set-default CA_THRUSTER7_AX 0.0
 param set-default CA_THRUSTER7_AY -1.0
 param set-default CA_THRUSTER7_AZ 0.0
 
-param set-default PWM_MAIN_FUNC1 501
-param set-default PWM_MAIN_FUNC2 502
-param set-default PWM_MAIN_FUNC3 503
-param set-default PWM_MAIN_FUNC4 504
-param set-default PWM_MAIN_FUNC5 505
-param set-default PWM_MAIN_FUNC6 506
-param set-default PWM_MAIN_FUNC7 507
-param set-default PWM_MAIN_FUNC8 508
+param set-default SIM_GZ_EC_FUNC1 501
+param set-default SIM_GZ_EC_FUNC2 502
+param set-default SIM_GZ_EC_FUNC3 503
+param set-default SIM_GZ_EC_FUNC4 504
+param set-default SIM_GZ_EC_FUNC5 505
+param set-default SIM_GZ_EC_FUNC6 506
+param set-default SIM_GZ_EC_FUNC7 507
+param set-default SIM_GZ_EC_FUNC8 508
 
-# PWM Simulation
-param set PWM_SIM_PWM_MAX 10000
-param set PWM_SIM_PWM_MIN 0
+param set-default SIM_GZ_EC_MIN1 0
+param set-default SIM_GZ_EC_MIN2 0
+param set-default SIM_GZ_EC_MIN3 0
+param set-default SIM_GZ_EC_MIN4 0
+param set-default SIM_GZ_EC_MIN5 0
+param set-default SIM_GZ_EC_MIN6 0
+param set-default SIM_GZ_EC_MIN7 0
+param set-default SIM_GZ_EC_MIN8 0
+
+param set-default SIM_GZ_EC_MAX1 10000
+param set-default SIM_GZ_EC_MAX2 10000
+param set-default SIM_GZ_EC_MAX3 10000
+param set-default SIM_GZ_EC_MAX4 10000
+param set-default SIM_GZ_EC_MAX5 10000
+param set-default SIM_GZ_EC_MAX6 10000
+param set-default SIM_GZ_EC_MAX7 10000
+param set-default SIM_GZ_EC_MAX8 10000
 
 # Controller Tunings
 param set SC_YAWRATE_P 3.335

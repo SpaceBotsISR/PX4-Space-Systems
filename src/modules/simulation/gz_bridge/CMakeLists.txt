@@ -68,6 +68,7 @@ if(gz-transport_FOUND)
 			GZMixingInterfaceWheel.hpp
 		DEPENDS
 			mixer_module
+			mathlib
 			px4_work_queue
 			${GZ_TRANSPORT_LIB}
 		MODULE_CONFIG

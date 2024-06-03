@@ -77,9 +77,17 @@ bool GZMixingInterfaceESC::updateOutputs(bool stop_motors, uint16_t outputs[MAX_
 	if (active_output_count > 0) {
 		gz::msgs::Actuators rotor_velocity_message;
 		rotor_velocity_message.mutable_velocity()->Resize(active_output_count, 0);
+		rotor_velocity_message.mutable_normalized()->Resize(active_output_count, 0);
 
 		for (unsigned i = 0; i < active_output_count; i++) {
 			rotor_velocity_message.set_velocity(i, outputs[i]);
+			if(_mixing_output.outputFunction(i) >= OutputFunction::Thruster1 && _mixing_output.outputFunction(i) <= OutputFunction::ThrusterMax) {
+				// const float output = math::interpolate(outputs[i], static_cast<float>(_mixing_output.minValue(i)), static_cast<float>(_mixing_output.maxValue(i)), 0.0, 1.0);
+				const double a = (1.0 - 0.0) / (_mixing_output.maxValue(i) - _mixing_output.minValue(i));
+				const double b = 0.0 - (a * static_cast<double>(_mixing_output.minValue(i)));
+				const double c = (a * static_cast<double>(outputs[i])) + b;
+				rotor_velocity_message.set_normalized(i, c);
+			}
 		}
 
 		if (_actuators_pub.Valid()) {

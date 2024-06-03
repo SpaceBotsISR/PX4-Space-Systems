@@ -34,6 +34,9 @@
 #pragma once
 
 #include <lib/mixer_module/mixer_module.hpp>
+#include <matrix/math.hpp>
+#include <mathlib/math/Limits.hpp>
+#include <mathlib/math/Functions.hpp>
 
 #include <gz/msgs.hh>
 #include <gz/transport.hh>

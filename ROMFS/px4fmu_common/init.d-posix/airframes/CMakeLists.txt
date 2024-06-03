@@ -105,6 +105,7 @@ px4_add_romfs_files(
 
 	71000_gazebo-classic_2d_spacecraft
 	71001_gazebo-classic_spacecraft_dart
+	71002_gz_spacecraft_2d
 
 	# [22000, 22999] Reserve for custom models
 )

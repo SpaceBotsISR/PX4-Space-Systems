@@ -1,3 +1,15 @@
+# Here for PX4 Space?
+
+To test the SITL environment, run:
+  
+  ```bash
+  make px4_sitl gazebo-classic_2d_spacecraft__frictionless
+  ```
+
+Gazebo Classic shall start with a spacecraft model in a frictionless environment. Make sure that you have followed the installation instructions for PX4 and Gazebo Classic.
+
+We recommend our custom QGroundControl build for spacecraft simulation. You can download and build the source available at [Spacecraft QGroundControl](https://github.com/DISCOWER/QGroundControl).
+
 # PX4 Drone Autopilot
 
 [![Releases](https://img.shields.io/github/release/PX4/PX4-Autopilot.svg)](https://github.com/PX4/PX4-Autopilot/releases) [![DOI](https://zenodo.org/badge/22634/PX4/PX4-Autopilot.svg)](https://zenodo.org/badge/latestdoi/22634/PX4/PX4-Autopilot)
@@ -65,6 +77,7 @@ Note: This is the source of truth for the active maintainers of PX4 ecosystem.
 | Hybrid VTOL | [Silvan Fuhrer](https://github.com/sfuhrer) |
 | Boat | x |
 | Rover | x |
+| Spacecraft| [Pedro Roque](https://github.com/Pedro-Roque) |
 
 See also [maintainers list](https://px4.io/community/maintainers/) (px4.io) and the [contributors list](https://github.com/PX4/PX4-Autopilot/graphs/contributors) (Github). However it may be not up to date.
 

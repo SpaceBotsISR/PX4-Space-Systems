@@ -50,6 +50,15 @@ publications:
   - topic: /fmu/out/vehicle_control_mode
     type: px4_msgs::msg::VehicleControlMode
 
+  - topic: /fmu/out/vehicle_angular_velocity_groundtruth
+    type: px4_msgs::msg::VehicleAngularVelocity
+  
+  - topic: /fmu/out/vehicle_attitude_groundtruth
+    type: px4_msgs::msg::VehicleAttitude
+
+  - topic: /fmu/out/vehicle_local_position_groundtruth
+    type: px4_msgs::msg::VehicleLocalPosition
+
   - topic: /fmu/out/vehicle_command_ack
     type: px4_msgs::msg::VehicleCommandAck
 

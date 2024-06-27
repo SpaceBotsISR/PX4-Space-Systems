@@ -10,6 +10,24 @@ Gazebo Classic shall start with a spacecraft model in a frictionless environment
 
 We recommend our custom QGroundControl build for spacecraft simulation. You can download and build the source available at [Spacecraft QGroundControl](https://github.com/DISCOWER/QGroundControl).
 
+Some of our changes are making their way to PRs on Gazebo, PX4-Autopilot and MAVLink. **Please create a GitHub issue on this repository if something is not working for you.**
+
+## PX4Space FAQ:
+
+### Is there a docker environment?
+Soon we will provide docker environments that you can use to build the binaries and deploy them. In case you follow the PX4 development guide on how to build the source code, the same instructions also apply to our fork.
+
+### How can I use Gazebo Garden or up?
+To this end, you will need to build Gazebo Garden from source - [instructions here](https://gazebosim.org/docs/garden/install_ubuntu_src) - and change the `gz-sim7` package with our version available in DISCOWER [GitHub](https://github.com/DISCOWER/gz-sim/tree/pr-spacecraft-thrusters), and make sure you use the branch `pr-spacecraft-thrusters`. 
+
+Then, you should build the PX4 Space Systems source code with
+  ```bash
+  make px4_sitl gz_spacecraft_2d
+  ```
+
+### How can I use the custom QGroundControl?
+Please follow the source build instructions for [QGroundControl](https://docs.qgroundcontrol.com/master/en/qgc-dev-guide/getting_started/index.html) but use our version of QGroundControl [available here](https://github.com/DISCOWER/qgroundcontrol).
+
 # PX4 Drone Autopilot
 
 [![Releases](https://img.shields.io/github/release/PX4/PX4-Autopilot.svg)](https://github.com/PX4/PX4-Autopilot/releases) [![DOI](https://zenodo.org/badge/22634/PX4/PX4-Autopilot.svg)](https://zenodo.org/badge/latestdoi/22634/PX4/PX4-Autopilot)

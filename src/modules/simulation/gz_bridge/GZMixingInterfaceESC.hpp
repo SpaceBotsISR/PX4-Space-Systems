@@ -85,6 +85,7 @@ private:
 	MixingOutput _mixing_output{"SIM_GZ_EC", MAX_ACTUATORS, *this, MixingOutput::SchedulingPolicy::Auto, false, false};
 
 	gz::transport::Node::Publisher _actuators_pub;
+	gz::transport::Node::Publisher _actuators_pub_thruster;
 
 	uORB::Publication<esc_status_s> _esc_status_pub{ORB_ID(esc_status)};
 

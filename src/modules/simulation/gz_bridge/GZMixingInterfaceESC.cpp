@@ -46,6 +46,10 @@ bool GZMixingInterfaceESC::init(const std::string &model_name)
 
 	// output eg /X500/command/motor_speed
 	std::string actuator_topic = "/" + model_name + "/command/motor_speed";
+
+	// override for thrusters
+	if(_mixing_output.outputFunction(i) >= OutputFunction::Thruster1 && _mixing_output.outputFunction(i) <= OutputFunction::ThrusterMax)
+		actuator_topic = "/" + model_name + "/command/duty_cycle";
 	_actuators_pub = _node.Advertise<gz::msgs::Actuators>(actuator_topic);
 
 	if (!_actuators_pub.Valid()) {

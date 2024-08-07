@@ -125,7 +125,7 @@
     </link>
 
     <link name='rotor_0'>
-      <pose>0.16 0.0 0.00 -0.0 -0.8192  -0.5736</pose>
+      <pose>0.25 0.0 0.0 -0.0 -0.8192 -0.5736</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>
@@ -173,24 +173,9 @@
       <gravity>1</gravity>
       <velocity_decay/>
     </link>
-    <joint name='rotor_0_joint' type='revolute'>
-      <child>rotor_0</child>
-      <parent>base_link</parent>
-      <axis>
-        <xyz expressed_in="rotor_0">0.0  0.0  0.0</xyz>
-        <limit>
-          <lower>-1e+16</lower>
-          <upper>1e+16</upper>
-        </limit>
-        <dynamics>
-          <spring_reference>0</spring_reference>
-          <spring_stiffness>0</spring_stiffness>
-        </dynamics>
 
-      </axis>
-    </joint>
     <link name='rotor_1'>
-      <pose>-0.08 -0.1385 0.0 -0.7094 0.4696 -0.5736</pose>
+      <pose>0.125 0.2165  0.0 -0.7094 0.4696 -0.5736</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>
@@ -238,23 +223,9 @@
       <gravity>1</gravity>
       <velocity_decay/>
     </link>
-    <joint name='rotor_1_joint' type='revolute'>
-      <child>rotor_1</child>
-      <parent>base_link</parent>
-      <axis>
-        <xyz expressed_in="rotor_1">0.0 0.0 0.0</xyz>
-        <limit>
-          <lower>-1e+16</lower>
-          <upper>1e+16</upper>
-        </limit>
-        <dynamics>
-          <spring_reference>0</spring_reference>
-          <spring_stiffness>0</spring_stiffness>
-        </dynamics>
-      </axis>
-    </joint>
+
     <link name='rotor_2'>
-      <pose>-0.08 -0.1385 0.0 0.7094  0.4096 -0. 5736</pose>
+      <pose>-0.125 0.2165 0.0 0.7094 0.4096 -0.5736</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>
@@ -302,24 +273,9 @@
       <gravity>1</gravity>
       <velocity_decay/>
     </link>
-    <joint name='rotor_2_joint' type='revolute'>
-      <child>rotor_2</child>
-      <parent>base_link</parent>
-      <axis>
-        <xyz expressed_in="rotor_2">0.0 0.0 0.0</xyz>
-        <limit>
-          <lower>-1e+16</lower>
-          <upper>1e+16</upper>
-        </limit>
-        <dynamics>
-          <spring_reference>0</spring_reference>
-          <spring_stiffness>0</spring_stiffness>
-        </dynamics>
 
-      </axis>
-    </joint>
     <link name='rotor_3'>
-      <pose>-0.16 0.0 0.0 0.0 0.8192 0.5736</pose>
+      <pose> -0.25 0.0 0.8192 0.5736</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>
@@ -367,24 +323,9 @@
       <gravity>1</gravity>
       <velocity_decay/>
     </link>
-    <joint name='rotor_3_joint' type='revolute'>
-      <child>rotor_3</child>
-      <parent>base_link</parent>
-      <axis>
-        <xyz expressed_in="rotor_3">0.0 0.0 0.0</xyz>
-        <limit>
-          <lower>-1e+16</lower>
-          <upper>1e+16</upper>
-        </limit>
-        <dynamics>
-          <spring_reference>0</spring_reference>
-          <spring_stiffness>0</spring_stiffness>
-        </dynamics>
-
-      </axis>
-    </joint>
+    
     <link name='rotor_4'>
-      <pose>-0.8 -0.1385 0.0 0.0 1.0 0.0</pose>
+      <pose>-0.125 -0.2165 0.0 0.0 1.0 0.0</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>
@@ -432,24 +373,9 @@
       <gravity>1</gravity>
       <velocity_decay/>
     </link>
-    <joint name='rotor_4_joint' type='revolute'>
-      <child>rotor_4</child>
-      <parent>base_link</parent>
-      <axis>
-        <xyz expressed_in="rotor_4">0.0 0.0 0.0</xyz>
-        <limit>
-          <lower>-1e+16</lower>
-          <upper>1e+16</upper>
-        </limit>
-        <dynamics>
-          <spring_reference>0</spring_reference>
-          <spring_stiffness>0</spring_stiffness>
-        </dynamics>
-
-      </axis>
-    </joint>
+  
     <link name='rotor_5'>
-      <pose>0.08 -0.1385 0.0  0.7094 0.4096 0.5736</pose>
+      <pose>0.125 -0.2165 0.0  0.7094 0.4096 0.5736</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>
@@ -497,22 +423,6 @@
       <gravity>1</gravity>
       <velocity_decay/>
     </link>
-    <joint name='rotor_5_joint' type='revolute'>
-      <child>rotor_5</child>
-      <parent>base_link</parent>
-      <axis>
-        <xyz expressed_in="rotor_5">0.0 0.0 0.0</xyz>
-        <limit>
-          <lower>-1e+16</lower>
-          <upper>1e+16</upper>
-        </limit>
-        <dynamics>
-          <spring_reference>0</spring_reference>
-          <spring_stiffness>0</spring_stiffness>
-        </dynamics>
-
-      </axis>
-    </joint>
 
     <plugin filename="gz-sim-multicopter-motor-model-system" name="gz::sim::systems::MulticopterMotorModel">
       <jointName>rotor_0_joint</jointName>

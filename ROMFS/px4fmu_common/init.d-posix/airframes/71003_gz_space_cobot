@@ -19,11 +19,6 @@ param set-default SENS_EN_GPSSIM 1
 param set-default SENS_EN_BAROSIM 1
 param set-default SENS_EN_MAGSIM 1
 
-## check with pedro if these parameters are needed for space cobot or not
-
-param set-default COM_ARM_CHK_ESCS 0  # We don't have ESCs
-param set-default FD_ESCS_EN 0 # We don't have ESCs - but maybe we need this later?
-
 param set-default CA_AIRFRAME 13
 param set-default MAV_TYPE 99
 
@@ -49,12 +44,12 @@ param set-default SIM_GZ_EC_MIN4 0
 param set-default SIM_GZ_EC_MIN5 0
 param set-default SIM_GZ_EC_MIN6 0
 
-param set-default SIM_GZ_EC_MAX1 10000
-param set-default SIM_GZ_EC_MAX2 10000
-param set-default SIM_GZ_EC_MAX3 10000
-param set-default SIM_GZ_EC_MAX4 10000
-param set-default SIM_GZ_EC_MAX5 10000
-param set-default SIM_GZ_EC_MAX6 10000
+param set-default SIM_GZ_EC_MAX1 1100
+param set-default SIM_GZ_EC_MAX2 1100
+param set-default SIM_GZ_EC_MAX3 1100
+param set-default SIM_GZ_EC_MAX4 1100
+param set-default SIM_GZ_EC_MAX5 1100
+param set-default SIM_GZ_EC_MAX6 1100
 
 
 # Propellers positions

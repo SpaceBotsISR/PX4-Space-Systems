@@ -21,7 +21,7 @@
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
           <mesh>
-            <scale>0.001 0.001 0.001</scale>
+            <scale>1.0 1.0 1.0</scale>
             <uri>model://space_cobot/meshes/cobot.dae</uri>
           </mesh>
         </geometry>
@@ -38,10 +38,10 @@
         </surface>
       </collision>
       <visual name='base_link_inertia_visual'>
-        <pose>-0.23 -0.32 -0.45 0 -0 0</pose>
+        <pose>0.0 0.0 0.0 0 -0 0</pose>
         <geometry>
           <mesh>
-            <scale>0.001 0.001 0.001</scale>
+            <scale>1.0 1.0 1.0</scale>
             <uri>model://space_cobot/meshes/cobot.dae</uri>
           </mesh>
         </geometry>
@@ -125,7 +125,7 @@
     </link>
 
     <link name='rotor_0'>
-      <pose>0.25 0.0 0.0 -0.0 -0.8192 -0.5736</pose>
+      <pose>0.16  -0.026  0.0 -0.0 -0.8192 -0.5736</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>
@@ -175,7 +175,7 @@
     </link>
 
     <link name='rotor_1'>
-      <pose>0.125 0.2165  0.0 -0.7094 0.4696 -0.5736</pose>
+      <pose>0.10 -0.12  0.0 -0.7094 0.4696 -0.5736</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>
@@ -225,7 +225,7 @@
     </link>
 
     <link name='rotor_2'>
-      <pose>-0.125 0.2165 0.0 0.7094 0.4096 -0.5736</pose>
+      <pose>-0.10 -0.12 0.0 0.7094 0.4096 -0.5736</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>
@@ -275,7 +275,7 @@
     </link>
 
     <link name='rotor_3'>
-      <pose> -0.25 0.0 0.8192 0.5736</pose>
+      <pose>-0.16 -0.02 0.0 0.0 0.8192 0.5736</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>
@@ -325,7 +325,7 @@
     </link>
     
     <link name='rotor_4'>
-      <pose>-0.125 -0.2165 0.0 0.0 1.0 0.0</pose>
+      <pose>-0.05 0.15 0.0 0.0 1.0 0.0</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>
@@ -375,7 +375,7 @@
     </link>
   
     <link name='rotor_5'>
-      <pose>0.125 -0.2165 0.0  0.7094 0.4096 0.5736</pose>
+      <pose>0.05 0.155 0.0  0.7094 0.4096 0.5736</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>

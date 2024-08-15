@@ -132,7 +132,7 @@
 
     <!-- Rotor 0 and Rotor 4 form a pair -->
     <link name='rotor_0'>
-      <pose>0.167 0.026 0.0 -0.959931 0.0 0.0</pose>
+      <pose>0.0 -0.1655 0.0 0.0 -0.958 0.0 </pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>
@@ -211,7 +211,7 @@
       <motorType>velocity</motorType>
     </plugin>
     <link name='rotor_3'>
-      <pose>-0.167 0.026 0.0 -0.959931 0.0 0.0</pose>
+      <pose>0.0 0.1655 0.0 0.0 2.1817 0.0</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>
@@ -292,7 +292,7 @@
 
     <!-- Rotor 1 and Rotor 5 form a pair -->
     <link name='rotor_1'>
-      <pose>0.105 0.129 0.0 0.0 0.0 0.0</pose>
+      <pose>0.1433 -0.0827 0.0 0.0 -0.9599 -1.0472</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>
@@ -371,7 +371,7 @@
       <motorType>velocity</motorType>
     </plugin>
     <link name='rotor_4'>
-      <pose>-0.059 -0.155 0.0 0.959931 0.0 0.0</pose>
+      <pose>-0.1433 0.0827 0.0 0.0 0.9599 2.0944</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>
@@ -451,7 +451,7 @@
     </plugin>
     <!-- Rotor 3 and Rotor 6 form a pair -->
     <link name='rotor_2'>
-      <pose>-0.105 0.129 0.0 0.0 0.0 0.0</pose>
+      <pose>0.1433 0.0827 0.0 0.0 0.9599 -2.0944</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>
@@ -530,7 +530,7 @@
       <motorType>velocity</motorType>
     </plugin>
     <link name='rotor_5'>
-      <pose>0.059 -0.155 0.0 0.959931 0.0 0.0</pose>
+      <pose>-0.1433 -0.0827 0.0 0.0 -0.9599 1.047</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>

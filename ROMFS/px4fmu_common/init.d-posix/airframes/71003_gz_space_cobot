@@ -4,7 +4,7 @@
 #
 # @type 2D Freeflyer with 8 thrusters - Planar motion
 #
-# @maintainer André Teixeira <andre.r.teixeira@tecnico.ulisboa.pt> 
+# @maintainer André Teixeira <andre.r.teixeira@tecnico.ulisboa.pt>
 #
 
 . ${R}etc/init.d/rc.sc_defaults
@@ -19,7 +19,7 @@ param set-default SENS_EN_GPSSIM 1
 param set-default SENS_EN_BAROSIM 1
 param set-default SENS_EN_MAGSIM 1
 
-param set-default CA_AIRFRAME 13
+param set-default CA_AIRFRAME 0
 param set-default MAV_TYPE 99
 
 param set-default CA_ROTOR_COUNT 6

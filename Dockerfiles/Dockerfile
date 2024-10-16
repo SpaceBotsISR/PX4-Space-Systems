@@ -4,6 +4,7 @@ USER root
 ENV user=px4space
 ENV home=/home/$user
 WORKDIR $home
+ENV ROS_DISTRO=humble
 
 RUN apt-get update -y && apt-get upgrade -y &&  apt-get install -y bash
 
@@ -44,6 +45,27 @@ RUN apt update && apt install -y python3-pip lsb-release gnupg curl git \
     cd $home/Gazebo && \
     colcon build --merge-install && \
     echo "source $home/Gazebo/install/setup.bash" >> $home/.bashrc
+
+
+RUN apt-get update -y && apt-get install -y git python3-rosdep && \
+    rosdep fix-permissions && rosdep init && rosdep update && \
+    apt-get install -y ros-${ROS_DISTRO}-ament-cmake && \
+    apt-get install -y python3-colcon-common-extensions && \
+    mkdir -p $HOME/microros_ws/ && cd $HOME/microros_ws/ && \
+    git clone -b $ROS_DISTRO https://github.com/micro-ROS/micro_ros_setup.git src/micro_ros_setup && \
+    rosdep update && \
+    rosdep install --from-paths src --ignore-src -y && \
+    apt-get install -y python3-pip && \
+    . /opt/ros/$ROS_DISTRO/setup.sh && \
+    colcon build && \
+    . install/setup.sh && \
+    ros2 run micro_ros_setup create_firmware_ws.sh host && \
+    ros2 run micro_ros_setup build_firmware.sh && \
+    . install/setup.sh && \
+    ros2 run micro_ros_setup create_agent_ws.sh && \
+    ros2 run micro_ros_setup build_agent.sh && \
+    . install/local_setup.sh && \
+    echo "source $HOME/microros_ws/install/local_setup.bash" >> $HOME/.bashrc
 
 ## QGround Control
 # Install qt version 6.6.3

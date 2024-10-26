@@ -132,7 +132,7 @@ WORKDIR $home
 ### PX4 simulation software compile
 RUN mkdir -p $home/PX4 && \
     cd $home/PX4 && \
-    git clone --recursive https://github.com/SpaceBotsISR/PX4-Space-Systems.git && \
+    git clone --recursive ${PX4_SOFTWARE_REPO} -b ${PX4_SOFTWARE_BRANCH} && \
     sudo ./PX4-Space-Systems/Tools/setup/ubuntu.sh -y && \
     pip3  install -r PX4-Space-Systems/Tools/setup/requirements.txt && \
     pip3 install --user  symforce &&  \

@@ -3,6 +3,7 @@
   <model name='space_cobot'>
     <self_collide>false</self_collide>
     <static>false</static>
+
     <link name='base_link'>
       <pose>0 0 0 0 -0 0</pose>
       <inertial>
@@ -17,6 +18,7 @@
           <izz>0.085225</izz>
         </inertia>
       </inertial>
+      
       <collision name='base_link_inertia_collision'>
         <pose>0 0 0 0 -0 0</pose>
         <geometry>
@@ -132,7 +134,7 @@
 
     <!-- Rotor 0 and Rotor 4 form a pair -->
     <link name='rotor_0'>
-      <pose>0.0 -0.1655 0.0 0.0 -0.958 0.0 </pose>
+      <pose>0.0 0.1655 0.0 0.0 -0.958 0.0 </pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>
@@ -210,8 +212,9 @@
       <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
       <motorType>velocity</motorType>
     </plugin>
+
     <link name='rotor_3'>
-      <pose>0.0 0.1655 0.0 0.0 2.1817 0.0</pose>
+      <pose>12.990 -7.5 0.0 0.959 -2.094 0.0</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>
@@ -292,7 +295,7 @@
 
     <!-- Rotor 1 and Rotor 5 form a pair -->
     <link name='rotor_1'>
-      <pose>0.1433 -0.0827 0.0 0.0 -0.9599 -1.0472</pose>
+      <pose>0.0 -15 0 0 0.0 2.181 0.0</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>
@@ -370,8 +373,9 @@
       <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
       <motorType>velocity</motorType>
     </plugin>
+
     <link name='rotor_4'>
-      <pose>-0.1433 0.0827 0.0 0.0 0.9599 2.0944</pose>
+      <pose>-12.99 7.5 0.0 0.0 0.959 2.094</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>
@@ -449,9 +453,10 @@
       <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
       <motorType>velocity</motorType>
     </plugin>
+
     <!-- Rotor 3 and Rotor 6 form a pair -->
     <link name='rotor_2'>
-      <pose>0.1433 0.0827 0.0 0.0 0.9599 -2.0944</pose>
+      <pose>12.99 7.5 0.0 0.0 0.959 -1.047 0.0</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>
@@ -529,8 +534,9 @@
       <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
       <motorType>velocity</motorType>
     </plugin>
+
     <link name='rotor_5'>
-      <pose>-0.1433 -0.0827 0.0 0.0 -0.9599 1.047</pose>
+      <pose>-12.99 7.5 0.0 0.0 0.959 1.047</pose>
       <inertial>
         <pose>0 0 0 0 -0 0</pose>
         <mass>0.005</mass>

@@ -72,7 +72,7 @@ RUN pip3 install vcstool \
     && sudo apt-get install -y \
     $(sort -u $(find . -iname 'packages-'$(lsb_release -cs)'.apt' -o -iname 'packages.apt' | grep -v '/\.git/') | sed '/gz\|sdf/d' | tr '\n' ' ') && \
     cd $home/Gazebo && \
-    colcon build --merge-install && \
+    colcon build --merge-install --parallel-workers 1 && \
     echo "source $home/Gazebo/install/setup.bash" >> $home/.bashrc
 
 
@@ -131,13 +131,7 @@ WORKDIR $home
 
 ### PX4 simulation software compile
 RUN mkdir -p $home/PX4 && \
-    cd $home/PX4 && \
-    git clone --recursive ${PX4_SOFTWARE_REPO} -b ${PX4_SOFTWARE_BRANCH} && \
-    sudo ./PX4-Space-Systems/Tools/setup/ubuntu.sh -y && \
-    pip3  install -r PX4-Space-Systems/Tools/setup/requirements.txt && \
-    pip3 install --user  symforce &&  \
-    cd PX4-Space-Systems && \
-    make px4_sitl
+    pip3 install --user symforce
 
 ## Set runtime directory environment variable
 ENV XDG_RUNTIME_DIR=/tmp/runtime-root

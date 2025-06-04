@@ -1,4 +1,4 @@
-FROM nvidia/opengl:1.2-glvnd-runtime-ubuntu22.04
+FROM nvidia/cuda:12.2.0-devel-ubuntu22.04
 
 ## Arguments for selection of the PX4 software repository and their respective branch, this makes it easier to switch without needing to change the Dockerfile
 ENV user=px4space
@@ -25,6 +25,7 @@ RUN apt-get update -y && \
     libgles2-mesa \
     libglx-mesa0 \
     libglx0 \
+    libgl1-mesa-glx \
     nvidia-utils-460 \
     libnvidia-gl-470 && \
     ln -fs /usr/share/zoneinfo/Etc/UTC /etc/localtime && \
@@ -37,7 +38,6 @@ RUN useradd -m -s /bin/bash px4space  \
     && chown -R px4space:px4space $home
 
 ## Switch to non root user
-
 
 ## Install ROS2
 RUN  sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg \
@@ -62,8 +62,8 @@ RUN pip3 install vcstool \
     && mkdir -p $home/Gazebo/src \
     && cd $home/Gazebo/src \
     && curl -O https://raw.githubusercontent.com/gazebo-tooling/gazebodistro/master/collection-garden.yaml \
-    && sed -i "s|gz-sim7|pr-spacecraft-thrusters|" collection-garden.yaml \
-    && sed -i 's|https://github.com/gazebosim/gz-sim|https://github.com/DISCOWER/gz-sim.git|' collection-garden.yaml \
+    && sed -i "s|gz-sim7|SpaceBotsISR/pr-spacecraft-reversible-motors|" collection-garden.yaml \
+    && sed -i 's|https://github.com/gazebosim/gz-sim|https://github.com/Planning-and-Control-in-Space-Cobot/gz-sim.git|' collection-garden.yaml \
     && vcs import < collection-garden.yaml \
     && curl https://packages.osrfoundation.org/gazebo.gpg --output /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg \
     && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null \
@@ -73,7 +73,6 @@ RUN pip3 install vcstool \
     cd $home/Gazebo && \
     colcon build --merge-install --parallel-workers 1 && \
     echo "source $home/Gazebo/install/setup.bash" >> $home/.bashrc
-
 
 # micro-ROS
 RUN rosdep fix-permissions && rosdep init && rosdep update && \
@@ -110,12 +109,32 @@ RUN mkdir -p $home/QGroundControl && \
 
 USER px4space
 RUN sudo chown -R px4space:px4space $home
+
+RUN sudo apt update -y && sudo apt install -y \
+  ros-humble-actuator-msgs \
+  ros-humble-geometry-msgs \
+  ros-humble-gps-msgs \
+  ros-humble-nav-msgs \
+  ros-humble-rclcpp \
+  ros-humble-rclcpp-components \
+  ros-humble-rosgraph-msgs \
+  ros-humble-sensor-msgs \
+  ros-humble-std-msgs \
+  ros-humble-tf2-msgs \
+  ros-humble-trajectory-msgs \
+  ros-humble-yaml-cpp-vendor \
+  ros-humble-vision-msgs
+
+ENV GZ_VERSION=garden
+
 # PX4 ROS2 messages
 RUN mkdir -p $home/PX4/ros2_ws/src && \
     cd $home/PX4/ros2_ws/src && \
-    git clone --recursive --depth=1 https://github.com/PX4/px4_msgs.git && \
+    git clone --recursive --depth=1 https://github.com/DISCOWER/px4_msgs.git && \
+    git clone --recursive --depth=1 --branch humble https://github.com/gazebosim/ros_gz.git && \
     cd $home/PX4/ros2_ws && \
-    . /opt/ros/humble/setup.sh && colcon build --symlink-install && \
-    echo "source $home/PX4/ros2_ws/install/setup.bash" >> $home/.bashrc
+    . /opt/ros/humble/setup.sh && sh $home/Gazebo/install/setup.sh && colcon build --symlink-install --packages-select px4_msgs ros_gz_interfaces ros_gz_bridge && \
+    echo "source $home/PX4/ros2_ws/install/setup.bash" >> $home/.bashrc && \ 
+    echo "export ROS_DOMAIN_ID=5" >> $home/.bashrc
 
 ENV XDG_RUNTIME_DIR=/tmp/runtime-root

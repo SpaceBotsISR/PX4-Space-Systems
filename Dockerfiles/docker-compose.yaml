@@ -8,6 +8,7 @@ services:
     runtime: nvidia
     network_mode: host
     ipc: host
+    gpus: all
     environment:
       DISPLAY: ${DISPLAY}
       NVIDIA_VISIBLE_DEVICES: all

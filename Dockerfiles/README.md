@@ -44,12 +44,17 @@ This container was developed around people using NVIDIA GPUS, so the instruction
 Since now we forward the **PX4-Space-Systems** folder to the docker container, the first time running the docker some actions are required,  you will need to install all the dependencies as well as compile the contents of the repository. To this simply execute the next command.  
 ```bash
 pushd PX4/PX4-Space-Systems && \
-	chmod +x ./Tools/setup/ubuntu.sh \
+	sudo chmod +x ./Tools/setup/ubuntu.sh \
   sudo ./Tools/setup/ubuntu.sh -y && \
 	pip3 install -r Tools/setup/requirements.txt && \
   pip3 install -r Tools/setup/optional-requirements.txt && \
 	make px4_sitl && \
 	popd
+
+pushd $home/PX4/ros2_ws && \ 
+  source  /opt/ros/humble/setup.bash && \
+  source $home/Gazebo/install/setup.sh && \
+  colcon build  --symlink-install --packages-select px4_msgs ros_gz_interfaces ros_gz_bridge
 ```
 
 ## Running simple simulation

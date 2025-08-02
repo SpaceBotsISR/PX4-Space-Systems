@@ -133,7 +133,7 @@ RUN mkdir -p $home/PX4/ros2_ws/src && \
     git clone --recursive --depth=1 https://github.com/DISCOWER/px4_msgs.git && \
     git clone --recursive --depth=1 --branch humble https://github.com/gazebosim/ros_gz.git && \
     cd $home/PX4/ros2_ws && \
-    . /opt/ros/humble/setup.sh && sh $home/Gazebo/install/setup.sh && colcon build --symlink-install --packages-select px4_msgs ros_gz_interfaces ros_gz_bridge && \
+#    . /opt/ros/humble/setup.sh && bash $home/Gazebo/install/setup.sh && colcon build --symlink-install --packages-select px4_msgs ros_gz_interfaces ros_gz_bridge && \
     echo "source $home/PX4/ros2_ws/install/setup.bash" >> $home/.bashrc && \ 
     echo "export ROS_DOMAIN_ID=5" >> $home/.bashrc
 

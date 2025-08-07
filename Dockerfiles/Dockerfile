@@ -1,4 +1,4 @@
-FROM nvidia/cuda:12.2.0-devel-ubuntu22.04
+FROM ros:humble
 
 ## Arguments for selection of the PX4 software repository and their respective branch, this makes it easier to switch without needing to change the Dockerfile
 ENV user=px4space
@@ -37,14 +37,8 @@ RUN useradd -m -s /bin/bash px4space  \
     && echo 'px4space ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
     && chown -R px4space:px4space $home
 
-## Switch to non root user
-
 ## Install ROS2
-RUN  sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg \
-    && sudo  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null \
-    && sudo apt-get update -y \
-    && sudo apt-get upgrade -y \
-    && sudo apt-get install -y ros-humble-desktop python3-rosdep
+RUN apt-get update -y && apt-get install -y python3-rosdep
 
 
 RUN echo "source /opt/ros/humble/setup.bash" >> $home/.bashrc
@@ -72,10 +66,12 @@ RUN pip3 install vcstool \
     $(sort -u $(find . -iname 'packages-'$(lsb_release -cs)'.apt' -o -iname 'packages.apt' | grep -v '/\.git/') | sed '/gz\|sdf/d' | tr '\n' ' ') && \
     cd $home/Gazebo && \
     colcon build --merge-install --parallel-workers 1 && \
-    echo "source $home/Gazebo/install/setup.bash" >> $home/.bashrc
+    echo "source $home/Gazebo/install/setup.bash" >> $home/.bashrc && \
+    rm -rf $home/Gazebo/build $home/Gazebo/log
+
 
 # micro-ROS
-RUN rosdep fix-permissions && rosdep init && rosdep update && \
+RUN rosdep fix-permissions && rosdep update && \
     apt-get install -y ros-${ROS_DISTRO}-ament-cmake python3-colcon-common-extensions && \
     mkdir -p $home/microros_ws/src && cd $home/microros_ws && \
     git clone -b $ROS_DISTRO https://github.com/micro-ROS/micro_ros_setup.git src/micro_ros_setup && \
@@ -87,7 +83,8 @@ RUN rosdep fix-permissions && rosdep init && rosdep update && \
     . install/setup.sh && \
     ros2 run micro_ros_setup create_agent_ws.sh && \
     ros2 run micro_ros_setup build_agent.sh && \
-    echo "source $home/microros_ws/install/local_setup.bash" >> $home/.bashrc
+    echo "source $home/microros_ws/install/local_setup.bash" >> $home/.bashrc && \
+    rm -rf build log
 
 # Qt 6.6.3
 RUN pip install aqtinstall
@@ -105,7 +102,8 @@ RUN mkdir -p $home/QGroundControl && \
     cd qgroundcontrol && \
     cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug && \
     cmake --build build --config Debug && \
-    cp ./build/QGroundControl $home/QGroundControlApp
+    cp ./build/QGroundControl $home/QGroundControlApp && \
+    rm -rf $home/QGroundControl/build 
 
 USER px4space
 RUN sudo chown -R px4space:px4space $home

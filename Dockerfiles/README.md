@@ -44,7 +44,7 @@ This container was developed around people using NVIDIA GPUS, so the instruction
 Since now we forward the **PX4-Space-Systems** folder to the docker container, the first time running the docker some actions are required,  you will need to install all the dependencies as well as compile the contents of the repository. To this simply execute the next command.  
 ```bash
 pushd PX4/PX4-Space-Systems && \
-	sudo chmod +x ./Tools/setup/ubuntu.sh \
+	sudo chmod +x ./Tools/setup/ubuntu.sh && \
   sudo ./Tools/setup/ubuntu.sh -y && \
 	pip3 install -r Tools/setup/requirements.txt && \
   pip3 install -r Tools/setup/optional-requirements.txt && \
@@ -80,7 +80,7 @@ make px4_sitl gz_space_cobot
 In another terminal start the micro_ros_agent (bridge gz topic to ros2)
 
 ```
-ros2 run micro_ros_agent micro_ros-agent upd4 --port 8888
+ros2 run micro_ros_agent micro_ros_agent udp4 --port 8888
 ```
 
 Now start the the Gz bridge, this node is a custom ros2 node that is available in [Github](https://github.com/Planning-and-Control-in-Space-Cobot/ros2), this will bridge the topic gazebo topic where the space cobot is expecting the control signal to ros2 in order to control only from a node, compile and launch the node using the following instructions 
@@ -89,7 +89,7 @@ Now start the the Gz bridge, this node is a custom ros2 node that is available i
 pushd ros2/ros2_ws_px4 
 colcon build --symlink-install  
 source install/setup.bash 
-ros2 launch gz_bridge gz_bridge.py.launch
+ros2 launch gz_bridge gz_bridge.launch.py
 popd
 ```
 

@@ -22,6 +22,5 @@ services:
       - /dev/dri:/dev/dri
       - ../../PX4-Space-Systems:/home/px4space/PX4/PX4-Space-Systems
       - ../../software_cobot:/home/px4space/softwareSpaceCobot
-      - ../../ros2:/home/px4space/cobot/ros2
     stdin_open: true
     tty: true

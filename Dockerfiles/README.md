@@ -86,7 +86,7 @@ ros2 run micro_ros_agent micro_ros_agent udp4 --port 8888
 Now start the the Gz bridge, this node is a custom ros2 node that is available in [Github](https://github.com/Planning-and-Control-in-Space-Cobot/ros2), this will bridge the topic gazebo topic where the space cobot is expecting the control signal to ros2 in order to control only from a node, compile and launch the node using the following instructions 
 
 ```
-pushd ros2/ros2_ws_px4 
+pushd cobotGazeboUtils/ros2_ws_px4 
 colcon build --symlink-install  
 source install/setup.bash 
 ros2 launch gz_bridge gz_bridge.launch.py
@@ -96,7 +96,7 @@ popd
 Now simply put the robot in offboard mode, to this either use QGroundControl and create a ros2 node that populated the offboard mode heart beat signal, or use a node available [same Github previously cloned](https://github.com/Planning-and-Control-in-Space-Cobot/ros2). Compile and run the node using the following instructions
 
 ```
-pushd ros2/ros2_ws_cobot
+pushd cobotGazeboUtils/ros2_ws_cobot
 colcon build --symlink-install
 source install/setup.bash
 ros2 run OffBoardModeGazebo OffBoardModeGazebo

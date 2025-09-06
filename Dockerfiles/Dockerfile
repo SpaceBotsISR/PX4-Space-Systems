@@ -133,4 +133,6 @@ RUN mkdir -p $home/PX4/ros2_ws/src && \
     echo "source $home/PX4/ros2_ws/install/setup.bash" >> $home/.bashrc && \ 
     echo "export ROS_DOMAIN_ID=5" >> $home/.bashrc
 
+RUN git clone git@github.com:Planning-and-Control-in-Space-Cobot/ros2.git cobotGazeboUtils
+
 ENV XDG_RUNTIME_DIR=/tmp/runtime-root

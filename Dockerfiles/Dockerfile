@@ -49,8 +49,6 @@ RUN pip3 install vcstool \
     && pip3 install -U colcon-common-extensions \
     && pip3 show vcstool | grep Location \
     && pip3 show colcon-common-extensions | grep Location \
-    && sh -c 'echo "deb http://packages.ros.org/ros2/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros2-latest.list' \
-    && curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add - \
     && sudo apt-get update -y \
     && sudo apt-get install -y python3-vcstool python3-colcon-common-extensions \
     && mkdir -p $home/Gazebo/src \

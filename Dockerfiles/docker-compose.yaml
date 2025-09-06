@@ -1,14 +1,16 @@
+version: "3.9"
+
 services:
   px4:
     container_name: px4_cont
     build:
       context: .
       dockerfile: Dockerfile
+      network: host
     image: px4
     runtime: nvidia
     network_mode: host
     ipc: host
-    gpus: all
     environment:
       DISPLAY: ${DISPLAY}
       NVIDIA_VISIBLE_DEVICES: all

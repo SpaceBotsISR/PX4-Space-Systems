@@ -41,16 +41,16 @@ Building the image is CPU- and memory-intensive; expect up to 40 minutes and ~32
 Shared folders are configured in `docker-compose.yml`. The default volumes mapping is:
 
 ```yaml
-    volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix:rw
-      - /dev/dri:/dev/dri
-      - ../../PX4-Space-Systems:/home/px4space/PX4/PX4-Space-Systems
+volumes:
+  - /tmp/.X11-unix:/tmp/.X11-unix:rw
+  - /dev/dri:/dev/dri
+  - ../../PX4-Space-Systems:/home/px4space/PX4/PX4-Space-Systems
 ```
 
 To add another shared folder, append an entry under the `volumes` section:
 
 ```yaml
-      - ./path/on/host:/path/in/container
+- ./path/on/host:/path/in/container
 ```
 
 Use relative paths where possible so collaborators do not need to mirror your directory layout.
@@ -120,10 +120,13 @@ Add a joystick in settings, arm the vehicle, and apply throttle. Map tiles are c
 2. Build the Gazebo–ROS 2 bridge workspace:
 
    ```bash
-   pushd cobotGazeboUtils/ros2_ws_px4
+   cd ~/cobotGazeboUtils/ros2_ws_px4
    colcon build --symlink-install
    source install/setup.bash
-   popd
+   cd ../ros2_ws_cobot
+   colcon build --symlink-install
+   source install/setup.bash
+   cd
    ```
 
 3. Build the offboard controller workspace:

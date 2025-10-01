@@ -119,7 +119,14 @@ RUN sudo apt update -y && sudo apt install -y \
   ros-humble-tf2-msgs \
   ros-humble-trajectory-msgs \
   ros-humble-yaml-cpp-vendor \
-  ros-humble-vision-msgs
+  ros-humble-vision-msgs \
+  ros-humble-image-transport \
+  ros-humble-mavlink \
+  ros-humble-mavros \
+  ros-humble-mavros-msgs \
+  ros-humble-cv-bridge \
+  ros-humble-geographic-msgs \
+  ros-humble-geometry-msgs
 
 ENV GZ_VERSION=garden
 

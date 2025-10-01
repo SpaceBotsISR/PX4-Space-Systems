@@ -8,8 +8,6 @@ Use ROS 2 Humble inside the container when ROS integration is required.
 
 ## Included Software
 
-The container bundles the following components:
-
 - Gazebo Garden
 - ROS 2 Humble
 - micro-ROS agent
@@ -20,7 +18,13 @@ The container bundles the following components:
 ## Prerequisites
 
 1. Install [Docker Engine](https://docs.docker.com/engine/install/).
-2. Ensure `docker compose` v2 is available: `docker compose version` should output a version string similar to `Docker Compose version v2.36.2`.
+2. Ensure `docker compose` v2 is available:
+
+   ```bash
+   docker compose version
+   ```
+
+   The output should resemble `Docker Compose version v2.36.2`.
 
 ## Build the Image
 
@@ -37,15 +41,15 @@ Building the image is CPU- and memory-intensive; expect up to 40 minutes and ~32
 Shared folders are configured in `docker-compose.yml`. The default volumes mapping is:
 
 ```yaml
-volumes:
-  - /tmp/.X11-unix:/tmp/.X11-unix:rw
-  - /dev/dri:/dev/dri
-  - ../../PX4-Space-Systems:/home/px4space/PX4/PX4-Space-Systems
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /dev/dri:/dev/dri
+      - ../../PX4-Space-Systems:/home/px4space/PX4/PX4-Space-Systems
 ```
 
 To add another shared folder, append an entry under the `volumes` section:
 
-```
+```yaml
       - ./path/on/host:/path/in/container
 ```
 
@@ -98,47 +102,73 @@ make px4_sitl gz_x500
 Gazebo should display the X500 drone. Launch QGroundControl:
 
 ```bash
-~/QGroundControlApp
+./QGroundControlApp
 ```
 
 Add a joystick in settings, arm the vehicle, and apply throttle. Map tiles are currently unavailable inside the container (known issue).
 
 ## Advanced Space Cobot Simulation
 
-1. Start Gazebo with the Space Cobot world:
+### Set Up Supporting Workspaces
+
+1. Clone the helper repository if needed:
 
    ```bash
-   cd ~/PX4/PX4-Space-Systems
-   make px4_sitl gz_space_cobot
+   git clone https://github.com/Planning-and-Control-in-Space-Cobot/ros2 cobotGazeboUtils
    ```
 
-2. Run the micro-ROS agent in another terminal:
-
-   ```bash
-   ros2 run micro_ros_agent micro_ros_agent udp4 --port 8888
-   ```
-
-3. Launch the Gazebo–ROS 2 bridge (clone https://github.com/Planning-and-Control-in-Space-Cobot/ros2 if needed):
+2. Build the Gazebo–ROS 2 bridge workspace:
 
    ```bash
    pushd cobotGazeboUtils/ros2_ws_px4
    colcon build --symlink-install
    source install/setup.bash
-   ros2 launch gz_bridge gz_bridge.launch.py
    popd
    ```
 
-4. Switch the robot to offboard mode with either QGroundControl or the helper node from the same repository:
+3. Build the offboard controller workspace:
 
    ```bash
    pushd cobotGazeboUtils/ros2_ws_cobot
    colcon build --symlink-install
    source install/setup.bash
+   popd
+   ```
+
+### Run the Simulation
+
+1. Launch Gazebo with the Space Cobot world:
+
+   ```bash
+   cd "$HOME"/PX4/PX4-Space-Systems
+   make px4_sitl gz_space_cobot
+   ```
+
+2. Start the micro-ROS agent in a new terminal:
+
+   ```bash
+   ros2 run micro_ros_agent micro_ros_agent udp4 --port 8888
+   ```
+
+3. Launch the Gazebo–ROS 2 bridge:
+
+   ```bash
+   pushd cobotGazeboUtils/ros2_ws_px4
+   source install/setup.bash
+   ros2 launch gz_bridge gz_bridge.launch.py
+   popd
+   ```
+
+4. Switch the robot to offboard mode:
+
+   ```bash
+   pushd cobotGazeboUtils/ros2_ws_cobot
+   source install/setup.bash
    ros2 run OffBoardModeGazebo OffBoardModeGazebo
    popd
    ```
 
-5. Publish actuator commands to begin control:
+5. Publish actuator commands to start control:
 
    ```bash
    ros2 topic pub /space_cobot_0/motor_command actuator_msgs/msg/Actuators "{

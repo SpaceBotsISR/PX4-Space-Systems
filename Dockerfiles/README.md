@@ -9,6 +9,7 @@ Use ROS 2 Humble inside the container when ROS integration is required.
 ## Included Software
 
 The container bundles the following components:
+
 - Gazebo Garden
 - ROS 2 Humble
 - micro-ROS agent
@@ -36,10 +37,10 @@ Building the image is CPU- and memory-intensive; expect up to 40 minutes and ~32
 Shared folders are configured in `docker-compose.yml`. The default volumes mapping is:
 
 ```yaml
-    volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix:rw
-      - /dev/dri:/dev/dri
-      - ../../PX4-Space-Systems:/home/px4space/PX4/PX4-Space-Systems
+volumes:
+  - /tmp/.X11-unix:/tmp/.X11-unix:rw
+  - /dev/dri:/dev/dri
+  - ../../PX4-Space-Systems:/home/px4space/PX4/PX4-Space-Systems
 ```
 
 To add another shared folder, append an entry under the `volumes` section:
@@ -90,13 +91,14 @@ pushd "$HOME"/PX4/ros2_ws && \
 Validate the setup by launching the default simulation:
 
 ```bash
+cd "$HOME"/PX4/PX4-Space-Systems
 make px4_sitl gz_x500
 ```
 
 Gazebo should display the X500 drone. Launch QGroundControl:
 
 ```bash
-./QGroundControlApp
+~/QGroundControlApp
 ```
 
 Add a joystick in settings, arm the vehicle, and apply throttle. Map tiles are currently unavailable inside the container (known issue).
@@ -106,6 +108,7 @@ Add a joystick in settings, arm the vehicle, and apply throttle. Map tiles are c
 1. Start Gazebo with the Space Cobot world:
 
    ```bash
+   cd ~/PX4/PX4-Space-Systems
    make px4_sitl gz_space_cobot
    ```
 

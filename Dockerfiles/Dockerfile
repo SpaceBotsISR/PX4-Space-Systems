@@ -101,7 +101,7 @@ RUN mkdir -p $home/QGroundControl && \
     cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug && \
     cmake --build build --config Debug && \
     cp ./build/QGroundControl $home/QGroundControlApp && \
-    rm -rf $home/QGroundControl/build 
+    rm -rf $home/QGroundControl/build
 
 USER px4space
 RUN sudo chown -R px4space:px4space $home
@@ -130,7 +130,7 @@ RUN mkdir -p $home/PX4/ros2_ws/src && \
     git clone --recursive --depth=1 --branch humble https://github.com/gazebosim/ros_gz.git && \
     cd $home/PX4/ros2_ws && \
 #    . /opt/ros/humble/setup.sh && bash $home/Gazebo/install/setup.sh && colcon build --symlink-install --packages-select px4_msgs ros_gz_interfaces ros_gz_bridge && \
-    echo "source $home/PX4/ros2_ws/install/setup.bash" >> $home/.bashrc && \ 
+    echo "source $home/PX4/ros2_ws/install/setup.bash" >> $home/.bashrc && \
     echo "export ROS_DOMAIN_ID=5" >> $home/.bashrc
 
 RUN git clone https://github.com/Planning-and-Control-in-Space-Cobot/ros2.git cobotGazeboUtils

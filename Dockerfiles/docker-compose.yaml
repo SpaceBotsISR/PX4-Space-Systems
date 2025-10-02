@@ -21,6 +21,6 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - /dev/dri:/dev/dri
       - ../../PX4-Space-Systems:/home/px4space/PX4/PX4-Space-Systems
-      - ../../software_cobot:/home/px4space/softwareSpaceCobot
+      #- ../../software_cobot:/home/px4space/softwareSpaceCobot
     stdin_open: true
     tty: true
